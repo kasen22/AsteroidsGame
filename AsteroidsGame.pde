@@ -70,3 +70,47 @@ public void keyPressed() // turns the spaceship left and right
     shots.add(new Bullet(mySpaceship));
   }
 }
+
+// Main setup and draw functions
+
+Spaceship mySpaceship = new Spaceship();  // Create a spaceship object
+ArrayList <Asteroid> myAsteroids;  // List of asteroids
+ArrayList <Bullet> shots = new ArrayList <Bullet>();  // List of bullets
+Star[] Sky = new Star[200];  // Background stars
+
+// Setup function initializes the game
+public void setup() {
+  myAsteroids = new ArrayList <Asteroid>();  // Initialize asteroid list
+  size(500, 500);  // Set the screen size
+  for (int i = 0; i < Sky.length; i++) {
+    Sky[i] = new Star();  // Initialize stars
+  }
+  for (int i = 0; i < 15; i++) {
+    myAsteroids.add(new Asteroid());  // Add 15 asteroids to the game
+  }
+}
+
+// Main draw loop
+public void draw() {
+  background(0);  // Black background
+
+  // Display spaceship
+  mySpaceship.move();
+  mySpaceship.show();
+
+  // Display stars in the background
+  for (int i = 0; i < Sky.length; i++) {
+    Sky[i].show();
+  }
+
+  // Move and display asteroids
+  for (int i = myAsteroids.size() - 1; i >= 0; i--) {
+    Asteroid currentAsteroid = myAsteroids.get(i);
+    currentAsteroid.move();
+    currentAsteroid.show();
+
+    // Check for collision with spaceship
+    float distance = dist((float)currentAsteroid.getMyCenterX(), (float)currentAsteroid.getMyCenterY(),
+                          (float)mySpaceship.getMyCenterX(), (float)mySpaceship.getMyCenterY());
+    if (distance < 30) {
+      myAsteroids.remove(i); 
